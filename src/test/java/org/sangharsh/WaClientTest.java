@@ -18,7 +18,7 @@ import org.junit.Test;
 public class WaClientTest {
 
 	
-	private WaClient waClient = new WaClient();
+	private static final WaClient waClient = new WaClient();
 	
 	@Test
 	@Ignore
@@ -39,7 +39,7 @@ public class WaClientTest {
 		System.out.println(Arrays.toString(str.getBytes(StandardCharsets.ISO_8859_1)));
 	}
 	
-	public static void main(String[] args) throws UnsupportedEncodingException {
+	public static void main2(String[] args) throws UnsupportedEncodingException {
 		byte[] bytes = new byte[20];
 		new Random().nextBytes(bytes);
 		System.out.println("RAW:"+ Arrays.toString(bytes));
@@ -51,6 +51,9 @@ public class WaClientTest {
 		System.out.println("ENCODED:"+encoded);
 		System.out.println("DECODED:"+URLDecoder.decode(encoded, StandardCharsets.UTF_8.toString()));
 		
+	}
+	public static void main(String[] args) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+		waClient.codeRequest("12345678");
 	}
 }
 
