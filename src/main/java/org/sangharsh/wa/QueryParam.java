@@ -15,4 +15,5 @@ public class QueryParam {
 	public static final String LOCALE = "lc";
 	public static final String SIM_MCC = "sim_mcc";
 	public static final String SIM_MNC = "sim_mnc";
+	public static final String CODE = "code";
 }

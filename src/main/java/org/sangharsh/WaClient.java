@@ -3,7 +3,7 @@ package org.sangharsh;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.sangharsh.wa.QueryParam.COUNTRY_CODE;
 import static org.sangharsh.wa.QueryParam.ID;
-import static org.sangharsh.wa.QueryParam.INCOMING_NO;
+import static org.sangharsh.wa.QueryParam.*;
 import static org.sangharsh.wa.QueryParam.LANGUAGE;
 import static org.sangharsh.wa.QueryParam.LOCALE;
 import static org.sangharsh.wa.QueryParam.METHOD;
@@ -12,6 +12,7 @@ import static org.sangharsh.wa.QueryParam.SIM_MNC;
 import static org.sangharsh.wa.QueryParam.TOKEN;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -47,8 +48,6 @@ public class WaClient {
 	}
 	
 	public void codeRequest(String phone) throws NoSuchAlgorithmException, UnsupportedEncodingException{
-		MultivaluedMap<String, String> params = new MultivaluedHashMap<String, String>();
-		params.add("user", "Anc".toUpperCase()); 
 		String response = client.target(HOST).path(WaPath.REQUEST_CODE)
 			.queryParam(COUNTRY_CODE, "91")
 			.queryParam(INCOMING_NO, phone)
@@ -56,20 +55,33 @@ public class WaClient {
 			.queryParam(LOCALE, CountryCode.IN)
 			.queryParam(METHOD, MethodCode.sms)
 			//.queryParam(SIM_MCC, "234")
-         .queryParam(SIM_MCC, "404")
+            .queryParam(SIM_MCC, "404")
 			.queryParam(SIM_MNC, "000")
 			.queryParam(TOKEN, generateToken(phone))
 			.queryParam(ID, generateId(phone))
 			.request(APPLICATION_JSON)
 			.header(Header.USER_AGENT, Header.UA_VALUE).get(String.class);
 			;
-     System.out.println(response);
+		 System.out.println(response);
 	}
 	
-	public void codeRegister(){
-		
+	public void codeRegister(String id, String phone, String code) throws UnsupportedEncodingException{
+		String response = client.target(HOST).path(WaPath.REGISTER)
+				.queryParam(COUNTRY_CODE, "91")
+				.queryParam(INCOMING_NO, phone)
+				.queryParam(LANGUAGE, LanguageCode.en)
+				.queryParam(LOCALE, CountryCode.IN)
+				.queryParam(ID, recoverId(id))
+				.queryParam(CODE, code)
+				.request(APPLICATION_JSON)
+				.header(Header.USER_AGENT, Header.UA_VALUE).get(String.class);
+		System.out.println(response);
 	}
 	
+	private String recoverId(String encodedId) throws UnsupportedEncodingException {
+		return URLDecoder.decode(encodedId, StandardCharsets.UTF_8.toString());
+	}
+
 	public void connect(){
 		
 	}
@@ -83,7 +95,7 @@ public class WaClient {
 		new Random().nextBytes(bytes);
 		System.out.println(Arrays.toString(bytes));
 		String identity = new String(bytes, StandardCharsets.ISO_8859_1);
-      String encoded = URLEncoder.encode(identity, StandardCharsets.UTF_8.toString());
+        String encoded = URLEncoder.encode(identity, StandardCharsets.UTF_8.toString());
 		System.out.println("ENCODED ID--> "+encoded);
 		return identity;
 	}
