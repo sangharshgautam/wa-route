@@ -52,9 +52,6 @@ public class WaClientTest {
 		System.out.println("DECODED:"+URLDecoder.decode(encoded, StandardCharsets.UTF_8.toString()));
 		
 	}
-	public static void main(String[] args) throws NoSuchAlgorithmException, UnsupportedEncodingException {
-		waClient.codeRequest("12345678");
-	}
 }
 
 

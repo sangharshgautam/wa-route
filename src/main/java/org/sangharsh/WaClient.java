@@ -50,18 +50,20 @@ public class WaClient {
 		MultivaluedMap<String, String> params = new MultivaluedHashMap<String, String>();
 		params.add("user", "Anc".toUpperCase()); 
 		String response = client.target(HOST).path(WaPath.REQUEST_CODE)
-			.queryParam(COUNTRY_CODE, "44")
+			.queryParam(COUNTRY_CODE, "91")
 			.queryParam(INCOMING_NO, phone)
 			.queryParam(LANGUAGE, LanguageCode.en)
-			.queryParam(LOCALE, CountryCode.GB)
-			.queryParam(METHOD, MethodCode.SMS)
-			.queryParam(SIM_MCC, "234")
+			.queryParam(LOCALE, CountryCode.IN)
+			.queryParam(METHOD, MethodCode.sms)
+			//.queryParam(SIM_MCC, "234")
+         .queryParam(SIM_MCC, "404")
 			.queryParam(SIM_MNC, "000")
 			.queryParam(TOKEN, generateToken(phone))
 			.queryParam(ID, generateId(phone))
 			.request(APPLICATION_JSON)
 			.header(Header.USER_AGENT, Header.UA_VALUE).get(String.class);
 			;
+     System.out.println(response);
 	}
 	
 	public void codeRegister(){
@@ -81,8 +83,8 @@ public class WaClient {
 		new Random().nextBytes(bytes);
 		System.out.println(Arrays.toString(bytes));
 		String identity = new String(bytes, StandardCharsets.ISO_8859_1);
-		String encoded = URLEncoder.encode(identity, StandardCharsets.UTF_8.toString());
-		System.out.println("ID--> "+encoded);
+      String encoded = URLEncoder.encode(identity, StandardCharsets.UTF_8.toString());
+		System.out.println("ENCODED ID--> "+encoded);
 		return identity;
 	}
 	
